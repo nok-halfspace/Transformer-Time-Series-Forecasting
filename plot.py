@@ -53,6 +53,37 @@ def plot_prediction(title, path_to_save, src, tgt, prediction, sensor_number, in
     plt.savefig(path_to_save+f"Prediction_{title}.png")
     plt.close()
 
+def plot_btc_prediction(title, path_to_save, src, tgt, prediction, sensor_number, index_in, index_tar, data_name='BTC'):
+
+    idx_scr = index_in[0, 1:].tolist()
+    idx_tgt = index_tar[0].tolist()
+    idx_pred = [i for i in range(idx_scr[0] +1, idx_tgt[-1])] #t2 - t61
+
+    plt.figure(figsize=(15,6))
+    plt.rcParams.update({"font.size" : 16})
+
+    # connect with last elemenet in src
+    # tgt = np.append(src[-1], tgt.flatten())
+    # prediction = np.append(src[-1], prediction.flatten())
+
+    # plotting
+    plt.plot(idx_scr, src, '-', color = 'blue', label = 'Input', linewidth=2)
+    plt.plot(idx_tgt, tgt, '-', color = 'indigo', label = 'Target', linewidth=2)
+    plt.plot(idx_pred, prediction,'--', color = 'limegreen', label = 'Forecast', linewidth=2)
+
+    #formatting
+    plt.grid(b=True, which='major', linestyle = 'solid')
+    plt.minorticks_on()
+    plt.grid(b=True, which='minor', linestyle = 'dashed', alpha=0.5)
+    plt.xlabel("Time Elapsed")
+    plt.ylabel("Close Price (%)")
+    plt.legend()
+    plt.title("Forecast {} price ".format(data_name))
+
+    # save
+    plt.savefig(path_to_save+f"Prediction_{title}.png")
+    plt.close()
+
 def plot_training(epoch, path_to_save, src, prediction, sensor_number, index_in, index_tar):
 
     # idx_scr = index_in.tolist()[0]
