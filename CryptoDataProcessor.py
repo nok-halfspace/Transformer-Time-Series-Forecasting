@@ -43,9 +43,9 @@ def process_crypto_data(source):
     return df
 
 if __name__ == '__main__':
-    # df = process_crypto_data('./Data/BTC_Hrs_History_20150101_20210427.csv')
-    # df.to_csv('./Data/processed_btc_data.csv')
-    df = pd.read_csv('./Data/processed_btc_data.csv')
-    print(df.shape[0])
-    print(df.shape)
-    print(df.size)
+    df = process_crypto_data('./Data/BTC_3hrs_History_20150101_20210427.csv')
+    df.to_csv('./Data/processed_btc_3hrs_data.csv')
+#     df = pd.read_csv('./Data/BTC_3hrs_History_20150101_20210427.csv')
+#     print(df.shape[0])
+#     print(df.shape)
+#     print(df.size)

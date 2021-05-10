@@ -44,8 +44,10 @@ class CryptoDataSet(Dataset):
         
         index_in = torch.tensor([i for i in range(start, start+self.T)])
         index_tar = torch.tensor([i for i in range(start + self.T, start + self.T + self.S)])
-        _input = torch.tensor(self.df[["price_close", "sin_hour", "cos_hour", "sin_day", "cos_day", "sin_month", "cos_month"]][start : start + self.T].values)
-        target = torch.tensor(self.df[["price_close", "sin_hour", "cos_hour", "sin_day", "cos_day", "sin_month", "cos_month"]][start + self.T : start + self.T + self.S].values)
+#         _input = torch.tensor(self.df[["price_close", "sin_hour", "cos_hour", "sin_day", "cos_day", "sin_month", "cos_month"]][start : start + self.T].values)
+#         target = torch.tensor(self.df[["price_close", "sin_hour", "cos_hour", "sin_day", "cos_day", "sin_month", "cos_month"]][start + self.T : start + self.T + self.S].values)
+        _input = torch.tensor(self.df[["price_close", "year", "sin_hour", "cos_hour", "sin_day", "cos_day", "sin_month", "cos_month"]][start : start + self.T].values)
+        target = torch.tensor(self.df[["price_close", "year","sin_hour", "cos_hour", "sin_day", "cos_day", "sin_month", "cos_month"]][start + self.T : start + self.T + self.S].values)
 
         # scalar is fit only to the input, to avoid the scaled values "leaking" information about the target range.
         # scalar is fit only for humidity, as the timestamps are already scaled

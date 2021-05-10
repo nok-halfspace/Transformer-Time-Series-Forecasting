@@ -6,7 +6,7 @@ from torch.utils.data import DataLoader
 import torch.nn as nn
 import torch
 from helpers import *
-from inference import *
+from inference import inference
 
 def main(
     epoch: int = 1000,
