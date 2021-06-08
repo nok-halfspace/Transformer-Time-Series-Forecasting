@@ -12,7 +12,7 @@ from icecream import ic
 class SensorDataset(Dataset):
     """Face Landmarks dataset."""
 
-    def __init__(self, csv_name = "clean_data.csv", root_dir = "Data/", training_length = "48", forecast_window = "12"):
+    def __init__(self, csv_name, root_dir, training_length, forecast_window):
         """
         Args:
             csv_file (string): Path to the csv file.
@@ -29,7 +29,7 @@ class SensorDataset(Dataset):
 
     def __len__(self):
         # return number of sensors
-        return len(self.df.groupby(by=["filtered_id"]))
+        return len(self.df.groupby(by=["reindexed_id"]))
 
     # Will pull an index between 0 and __len__. 
     def __getitem__(self, idx):
@@ -39,12 +39,12 @@ class SensorDataset(Dataset):
 
         # np.random.seed(0)
 
-        start = np.random.randint(0, len(self.df[self.df["filtered_id"]==idx]) - self.T - self.S) 
-        sensor_number = str(self.df[self.df["filtered_id"]==idx][["sensor_id"]][start:start+1].values.item())
+        start = np.random.randint(0, len(self.df[self.df["reindexed_id"]==idx]) - self.T - self.S) 
+        sensor_number = str(self.df[self.df["reindexed_id"]==idx][["sensor_id"]][start:start+1].values.item())
         index_in = torch.tensor([i for i in range(start, start+self.T)])
         index_tar = torch.tensor([i for i in range(start + self.T, start + self.T + self.S)])
-        _input = torch.tensor(self.df[self.df["filtered_id"]==idx][["humidity", "sin_hour", "cos_hour", "sin_day", "cos_day", "sin_month", "cos_month"]][start : start + self.T].values)
-        target = torch.tensor(self.df[self.df["filtered_id"]==idx][["humidity", "sin_hour", "cos_hour", "sin_day", "cos_day", "sin_month", "cos_month"]][start + self.T : start + self.T + self.S].values)
+        _input = torch.tensor(self.df[self.df["reindexed_id"]==idx][["humidity", "sin_hour", "cos_hour", "sin_day", "cos_day", "sin_month", "cos_month"]][start : start + self.T].values)
+        target = torch.tensor(self.df[self.df["reindexed_id"]==idx][["humidity", "sin_hour", "cos_hour", "sin_day", "cos_day", "sin_month", "cos_month"]][start + self.T : start + self.T + self.S].values)
 
         # scalar is fit only to the input, to avoid the scaled values "leaking" information about the target range.
         # scalar is fit only for humidity, as the timestamps are already scaled
